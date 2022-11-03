@@ -18,16 +18,14 @@ dotenv.config();
 const {
   // The base URL to serve assets from
   ASSET_BASE_URL: baseUrl = "http://localhost:3000",
+  DATABASE_URL: DATABASE_URL = "http://localhost:3000",
 } = process.env;
 
 export default withAuth(
   config({
     db: {
-      // we're using sqlite for the fastest startup experience
-      //   for more information on what database might be appropriate for you
-      //   see https://keystonejs.com/docs/guides/choosing-a-database#title
-      provider: "sqlite",
-      url: "file:./keystone.db",
+      provider: "postgresql",
+      url: DATABASE_URL,
     },
     lists,
     session,
