@@ -13,12 +13,12 @@ generator client {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  name      String    @default("")
-  email     String    @unique @default("")
-  password  String
-  projects  Project[] @relation("Project_author")
-  createdAt DateTime? @default(now())
+  id       String    @id @default(cuid())
+  name     String    @default("")
+  email    String    @unique @default("")
+  password String
+  projects Project[] @relation("Project_author")
+  isAdmin  Boolean   @default(false)
 }
 
 model Project {

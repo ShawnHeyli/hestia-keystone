@@ -36,9 +36,10 @@ var import_core = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
 var import_fields = require("@keystone-6/core/fields");
 var import_fields_document = require("@keystone-6/fields-document");
+var isAdmin = ({ session: session2 }) => session2?.data.isAdmin;
 var lists = {
   User: (0, import_core.list)({
-    access: import_access.allowAll,
+    access: isAdmin,
     fields: {
       name: (0, import_fields.text)({ validation: { isRequired: true } }),
       email: (0, import_fields.text)({
@@ -47,13 +48,18 @@ var lists = {
       }),
       password: (0, import_fields.password)({ validation: { isRequired: true } }),
       projects: (0, import_fields.relationship)({ ref: "Project.author", many: true }),
-      createdAt: (0, import_fields.timestamp)({
-        defaultValue: { kind: "now" }
-      })
+      isAdmin: (0, import_fields.checkbox)({ defaultValue: false })
     }
   }),
   Project: (0, import_core.list)({
-    access: import_access.allowAll,
+    access: {
+      operation: {
+        query: import_access.allowAll,
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin
+      }
+    },
     fields: {
       title: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
       demoLink: (0, import_fields.text)({}),
@@ -100,7 +106,14 @@ var lists = {
     }
   }),
   Image: (0, import_core.list)({
-    access: import_access.allowAll,
+    access: {
+      operation: {
+        query: import_access.allowAll,
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin
+      }
+    },
     fields: {
       image: (0, import_fields.image)({ storage: "local_images" }),
       altText: (0, import_fields.text)({
@@ -123,7 +136,7 @@ if (!sessionSecret && true) {
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
-  sessionData: "name createdAt",
+  sessionData: "isAdmin",
   secretField: "password",
   initFirstItem: {
     fields: ["name", "email", "password"]
