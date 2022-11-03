@@ -137,10 +137,7 @@ var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
   sessionData: "isAdmin",
-  secretField: "password",
-  initFirstItem: {
-    fields: ["name", "email", "password"]
-  }
+  secretField: "password"
 });
 var sessionMaxAge = 60 * 60 * 24 * 30;
 var session = (0, import_session.statelessSessions)({
