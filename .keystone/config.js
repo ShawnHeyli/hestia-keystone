@@ -152,13 +152,14 @@ var session = (0, import_session.statelessSessions)({
 var import_dotenv = __toESM(require("dotenv"));
 import_dotenv.default.config();
 var {
-  ASSET_BASE_URL: baseUrl = "http://localhost:3000"
+  ASSET_BASE_URL: baseUrl = "http://localhost:3000",
+  DATABASE_URL = "http://localhost:3000"
 } = process.env;
 var keystone_default = withAuth(
   (0, import_core2.config)({
     db: {
-      provider: "sqlite",
-      url: "file:./keystone.db"
+      provider: "postgresql",
+      url: DATABASE_URL
     },
     lists,
     session,
